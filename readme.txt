@@ -1,52 +1,88 @@
-#                                                                     Titanic Survival Prediction - Machine Learning Project
+                                               🚢 Titanic Survival Prediction
 
-This project predicts passenger survival on the Titanic using machine learning. It is based on the Kaggle Titanic Competition(https://www.kaggle.com/competitions/titanic).
+A Machine Learning Pipeline using XGBoost, LightGBM & Stacking Classifiers
+
+                                                📌 Project Overview
+
+This project predicts whether a passenger survived the Titanic disaster using machine learning.
+It follows the Kaggle Titanic: Machine Learning from Disaster challenge format.
+
+We train multiple models, tune hyperparameters, and combine them using stacking for improved performance.
 
 
-##                                         Dataset Description
+                                                📂 Dataset Description
 
-   The project uses three datasets:
+The project uses two CSV files:
 
-- 'train.csv' — training data containing features and survival outcomes.
-- 'test.csv' — test data with missing `Survived` values to predict.
-- 'gender_submission.csv' — sample submission (not directly used in model training).
+train.csv → Passenger data with the target variable Survived.
 
----
+test.csv → Passenger data without the Survived column (predictions needed).
 
-##                                         Project Workflow
 
-### 1. Data Loading
-- The train, test, and gender submission CSV files are loaded using pandas.
+                                                 🛠 Workflow
 
-### 2. Data Exploratory Analysis
-- Dataset inspection with '.head()', '.info()', '.hist()', and '.isnull().sum()' 
+                 1️⃣ Data Loading & Exploration
 
-### 3. Preprocessing
-- Numerical columns ('Age', 'Fare', etc.) are imputed with the median.
-- Categorical columns ('Sex', 'Embarked') are imputed with the most frequent value and encoded using 'OrdinalEncoder'.
-- Textual columns like 'Name', 'Ticket', and 'Cabi'` are dropped as they're not used in the model.
+Load datasets with pandas.
 
-### 4. Training Model
-- Model: 'LightGBMClassifier' from LightGBM.
-- Parameters: 'n_estimators=100', 'learning_rate=0.01', 'max_depth=5', 'random_state=42' .
-- Training is done on the preprocessed training set.
-- Evaluation is done using 'cross_val_predict' and 'accuracy_score' methods.
+Display sample rows & dataset info.
 
-### 5. Test Set Prediction
-- The same preprocessing steps are applied to the test set.
-- Predictions are made using the trained LightGBM model.
+Analyze numerical feature correlations with survival rate.
 
-### 6. Output
-- A CSV file 'titanic_final_submission.csv' is generated for submission.
-- This file includes:
-  - 'PassengerId' 
-  - 'Survived' prediction (0 = Not Survived, 1 = Survived)
+                 2️⃣ Data Preprocessing
 
----
+Numerical Features:
 
-## Requirements
+    Missing values filled with median (SimpleImputer).
 
-Install the following Python packages (via pip or conda):
+Categorical Features:
 
-```bash
-pip install pandas numpy matplotlib scikit-learn lightgbm 
+    Missing Embarked values replaced with the most frequent value (mode).
+
+Categorical columns (Sex, Embarked) encoded with OrdinalEncoder.
+
+Dropped unused columns: Name, Ticket, Cabin.
+
+Combined processed numerical and categorical data into final training and test sets.
+
+
+                  3️⃣ Models Used
+
+1. XGBoost (XGBClassifier)
+
+2. LightGBM (LGBMClassifier)
+
+3. Stacking Classifier
+
+Base models: LightGBM & XGBoost
+
+Final estimator: Logistic Regression
+
+                   4️⃣ Hyperparameter Tuning
+
+Used GridSearchCV to tune:
+
+1. n_estimators
+
+2. max_depth
+
+Evaluated models using 5-fold cross-validation accuracy.
+
+
+                   5️⃣ Model Evaluation
+
+Accuracy scores printed for:
+
+1. LightGBM
+
+2. XGBoost
+
+3. Stacked Model
+
+                   6️⃣ Test Set Predictions
+
+Applied same preprocessing steps to the test set.
+
+Generated predictions using the stacked model.
+
+Predictions stored in test_pred
